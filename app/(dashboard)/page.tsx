@@ -80,91 +80,84 @@ export default function DashboardPage() {
                             </p>
                         </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-6 my-4 px-6 w-full">
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 my-4 px-4 sm:px-6 w-full">
                         <div
-                            className="bg-white/10 rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300">
-                            <div className="flex items-center justify-between gap-2">
-                                <div className=" flex flex-row justify-center items-center gap-2">
-                                    <div className="bg-blue-100 rounded-full p-2">
-                                        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
+                            className="bg-white/10 rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-4 md:p-6 transform hover:scale-105 transition-all duration-300">
+                            <div className="flex items-center justify-between gap-1 sm:gap-2">
+                                <div className="flex flex-row justify-center items-center gap-1 sm:gap-2">
+                                    <div className="bg-blue-100 rounded-full p-1.5 sm:p-2">
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" fill="none"
+                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
                                                   d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                                         </svg>
                                     </div>
-                                    <p className="hidden md:block text-blue-100 text-sm font-bolds">Total Proyectos</p>
+                                    <p className="hidden md:block text-blue-100 text-xs sm:text-sm font-medium">Total
+                                        Proyectos</p>
+                                    <p className="md:hidden text-blue-100 text-xs sm:text-sm font-medium">Total</p>
                                 </div>
-                                <div className="flex flex-col justify-center items-center">
-                                    <p className=" md:hidden block text-blue-100 text-center text-sm font-bolds">Total</p>
-                                    <p className="text-xl font-bold text-blue-100 mt-2">{projects.length}</p>
-                                </div>
+                                <p className="text-lg sm:text-xl md:text-2xl font-bold text-blue-100">{projects.length}</p>
                             </div>
                         </div>
 
                         <div
-                            className="bg-white/10 rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300">
-                            <div className="flex items-center justify-between gap-2">
-                                <div className=" flex flex-row justify-center items-center gap-2">
-                                    <div className="bg-green-100 rounded-full p-2">
-                                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
+                            className="bg-white/10 rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-4 md:p-6 transform hover:scale-105 transition-all duration-300">
+                            <div className="flex items-center justify-between gap-1 sm:gap-2">
+                                <div className="flex flex-row justify-center items-center gap-1 sm:gap-2">
+                                    <div className="bg-green-100 rounded-full p-1.5 sm:p-2">
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" fill="none"
+                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
                                                   d="M13 10V3L4 14h7v7l9-11h-7z"/>
                                         </svg>
                                     </div>
-                                    <p className=" hidden md:block text-green-100 text-sm font-medium">Activos</p>
+                                    <p className="hidden md:block text-green-100 text-xs sm:text-sm font-medium">Activos</p>
+                                    <p className="md:hidden text-green-100 text-xs sm:text-sm font-medium">Act</p>
                                 </div>
-                                <div className="flex flex-col justify-center items-center">
-                                    <p className=" md:hidden block text-green-100 text-center text-sm font-bolds">Activos</p>
-                                    <p className="text-xl font-bold text-green-600 mt-2">
-                                        {projects.filter(p => p.status === "Activo").length}
-                                    </p>
-                                </div>
+                                <p className="text-lg sm:text-xl md:text-2xl font-bold text-green-100">
+                                    {projects.filter(p => p.status === "Activo").length}
+                                </p>
                             </div>
                         </div>
 
                         <div
-                            className="bg-white/10 rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300">
-                            <div className="flex items-center justify-between gap-2">
-                                <div className=" flex flex-row justify-center items-center gap-2">
-                                    <div className="bg-yellow-100 rounded-full p-2">
-                                        <svg className="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
+                            className="bg-white/10 rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-4 md:p-6 transform hover:scale-105 transition-all duration-300">
+                            <div className="flex items-center justify-between gap-1 sm:gap-2">
+                                <div className="flex flex-row justify-center items-center gap-1 sm:gap-2">
+                                    <div className="bg-yellow-100 rounded-full p-1.5 sm:p-2">
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-600" fill="none"
+                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
                                                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                         </svg>
                                     </div>
-                                    <p className="hidden md:block text-yellow-100 text-sm font-medium">En Progreso</p>
-                                </div>
-                                <div className="flex flex-col justify-center items-center">
-                                    <p className=" md:hidden block text-yellow-100 text-center text-sm font-bolds">En
+                                    <p className="hidden md:block text-yellow-100 text-xs sm:text-sm font-medium">En
                                         Progreso</p>
-                                    <p className="text-xl font-bold text-yellow-600 mt-2">
-                                        {projects.filter(p => p.status === "En Progreso").length}
-                                    </p>
+                                    <p className="md:hidden text-yellow-100 text-xs sm:text-sm font-medium">Prog</p>
                                 </div>
+                                <p className="text-lg sm:text-xl md:text-2xl font-bold text-yellow-100">
+                                    {projects.filter(p => p.status === "En Progreso").length}
+                                </p>
                             </div>
                         </div>
 
                         <div
-                            className="bg-white/10 rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300">
-                            <div className="flex items-center justify-between gap-2">
-                                <div className=" flex flex-row justify-center items-center gap-2">
-                                    <div className="bg-purple-100 rounded-full p-2">
-                                        <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
+                            className="bg-white/10 rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-4 md:p-6 transform hover:scale-105 transition-all duration-300">
+                            <div className="flex items-center justify-between gap-1 sm:gap-2">
+                                <div className="flex flex-row justify-center items-center gap-1 sm:gap-2">
+                                    <div className="bg-purple-100 rounded-full p-1.5 sm:p-2">
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" fill="none"
+                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
                                                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                         </svg>
                                     </div>
-                                    <p className="hidden md:block text-purple-100 text-sm font-medium">Completados</p>
+                                    <p className="hidden md:block text-purple-100 text-xs sm:text-sm font-medium">Completados</p>
+                                    <p className="md:hidden text-purple-100 text-xs sm:text-sm font-medium">Comp</p>
                                 </div>
-                                <div className="flex flex-col justify-center items-center">
-                                    <p className=" md:hidden block text-purple-100 text-center text-sm font-bolds break-words">Completados</p>
-                                    <p className="text-xl font-bold text-purple-600 mt-2">
-                                        {projects.filter(p => p.status === "Completado").length}
-                                    </p>
-                                </div>
+                                <p className="text-lg sm:text-xl md:text-2xl font-bold text-purple-100">
+                                    {projects.filter(p => p.status === "Completado").length}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -184,7 +177,7 @@ export default function DashboardPage() {
 
                     <button
                         onClick={() => router.push("/project/new")}
-                        className=" fixed right-4 bottom-4 md:relative inline-flex items-center gap-2 px-6 py-3 bg-slate-600 text-slate-50 rounded-xl font-medium hover:bg-slate-500 hover:cursor-pointer transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        className=" fixed right-4 bottom-4 z-50 md:relative inline-flex items-center gap-2 px-6 py-3 bg-slate-600 text-slate-50 rounded-xl font-medium hover:bg-slate-500 hover:cursor-pointer transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
