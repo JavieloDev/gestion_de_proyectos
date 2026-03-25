@@ -1,0 +1,5 @@
+import Loading from '@/components/loading';
+
+export default function DashboardLoading() {
+    return <Loading text="Cargando tus proyectos..." type="dashboard"/>;
+}

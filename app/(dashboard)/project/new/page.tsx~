@@ -1,0 +1,23 @@
+"use client";
+
+import {useProjects} from "@/hooks/use-project";
+import ProjectForm from "@/components/project-form";
+import {useRouter} from "next/navigation";
+import {ProjectFormData} from "@/lib/types";
+
+export default function NewProjectPage() {
+    const {createProject, isCreating} = useProjects();
+    const router = useRouter();
+    const handleSubmit = (data: ProjectFormData) => {
+        createProject(data);
+        router.push('/');
+    };
+    return (
+        <div className="min-h-screen bg-slate-100">
+            <ProjectForm
+                onSubmit={handleSubmit}
+                isLoading={isCreating}
+            />
+        </div>
+    );
+}

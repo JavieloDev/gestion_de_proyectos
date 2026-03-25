@@ -1,0 +1,337 @@
+"use client";
+
+import {useState} from "react";
+import {useRouter} from "next/navigation";
+import {ProjectFormData, ProjectStatus} from "@/lib/types";
+
+interface ProjectFormProps {
+    onSubmit: (data: ProjectFormData) => Promise<void>;
+    initialData?: Partial<ProjectFormData>;
+    isEditing?: boolean;
+    isLoading?: boolean;
+}
+
+export default function ProjectForm({
+                                        onSubmit,
+                                        initialData = {},
+                                        isEditing = false,
+                                        isLoading = false
+                                    }: ProjectFormProps) {
+    const router = useRouter();
+    const [formData, setFormData] = useState<Partial<ProjectFormData>>({
+        title: initialData.title || "",
+        description: initialData.description || "",
+        status: initialData.status || "Activo",
+        date: initialData.date || new Date().toISOString().split("T")[0],
+        deadline: initialData.deadline || "",
+        technologies: initialData.technologies || [],
+    });
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [techInput, setTechInput] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    /**
+     * Handles the form submission event.
+     *
+     * @param e - The form submission event
+     */
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (validateForm()) {
+            setIsSubmitting(true);
+            try {
+                await onSubmit(formData as ProjectFormData);
+                router.push("/");
+            } catch (error) {
+                console.error("Error al guardar:", error);
+            } finally {
+                setIsSubmitting(false);
+            }
+        }
+    };
+
+
+    /**
+     * Validates the form data before submission.
+     *
+     * @returns {boolean} True if all validation rules pass, false if there are any errors
+     */
+    const validateForm = (): boolean => {
+        const newErrors: Record<string, string> = {};
+
+        if (!formData.title?.trim()) {
+            newErrors.title = "El título es requerido";
+        } else if (formData.title.length < 3) {
+            newErrors.title = "El título debe tener al menos 3 caracteres";
+        }
+
+        if (!formData.description?.trim()) {
+            newErrors.description = "La descripción es requerida";
+        } else if (formData.description.length < 10) {
+            newErrors.description = "La descripción debe tener al menos 10 caracteres";
+        }
+
+        if (!formData.date) {
+            newErrors.date = "La fecha de inicio es requerida";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+
+    /**
+     * Adds a new technology to the project's technologies list.
+     */
+    const addTechnology = () => {
+        if (techInput.trim() && !formData.technologies?.includes(techInput.trim())) {
+            setFormData({
+                ...formData,
+                technologies: [...(formData.technologies || []), techInput.trim()],
+            });
+            setTechInput("");
+        }
+    };
+
+    /**
+     * Removes a technology from the project's technologies list.
+     */
+    const removeTechnology = (tech: string) => {
+        setFormData({
+            ...formData,
+            technologies: formData.technologies?.filter((t) => t !== tech),
+        });
+    };
+
+    /**
+     * Handles keyboard events in the technology input field.
+     *
+     * @param e - The keyboard event from the technology input field
+     */
+    const handleTechKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            addTechnology();
+        }
+    };
+
+    const isFormLoading = isLoading || isSubmitting;
+
+    return (
+        <div className="w-full">
+            <div className="bg-slate-800/80 px-8 py-6">
+                <div className="max-w-4xl">
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+                        {isEditing ? "Editar Proyecto" : "Crear Nuevo Proyecto"}
+                    </h1>
+                    <p className="text-xl text-white/80">
+                        {isEditing
+                            ? "Actualiza la información de tu proyecto"
+                            : "Completa el formulario para agregar un nuevo proyecto"}
+                    </p>
+                </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row  mt-6">
+                <div className="w-full md:w-2/6 bg-slate-50 rounded-xl p-4 border border-blue-100">
+                    <div className="flex flex-col items-start gap-3">
+                        <div className="flex flex-row gap-2 justify-center items-center text-slate-600 text-xl">
+                            <svg className="w-7 h-7 text-slate-600" fill="currentColor" stroke="currentColor"
+                                 viewBox="0 0 50 50">
+                                <path
+                                    d="M25 3C16.729 3 10 9.729 10 18C10 24.167 12.772828 27.138594 14.798828 29.308594C16.076828 30.678594 17 31.668 17 33L17 38L24 38L24 23.414062L20.292969 19.707031C19.901969 19.316031 19.901969 18.683969 20.292969 18.292969C20.683969 17.901969 21.316031 17.901969 21.707031 18.292969L25 21.585938L28.292969 18.292969C28.683969 17.901969 29.316031 17.901969 29.707031 18.292969C30.098031 18.683969 30.098031 19.316031 29.707031 19.707031L26 23.414062L26 38L33 38L33 33C33 31.084 34.102094 29.934516 35.496094 28.478516C37.503094 26.382516 40 23.773 40 18C40 9.729 33.271 3 25 3 z M 17 40L17 43C17 44.654 18.346 46 20 46L21.142578 46C21.589913 47.720168 23.141562 49 25 49C26.858438 49 28.410087 47.720168 28.857422 46L30 46C31.654 46 33 44.654 33 43L33 40L17 40 z"
+                                />
+                            </svg>
+                            <h3 className="text-md font-semibold text-slate-900">Tips para un buen proyecto</h3>
+                        </div>
+                        <ul className="ml-10 text-sm text-slate-800 mt-1 space-y-1">
+                            <li>• Usa un título claro y descriptivo</li>
+                            <li>• Describe los objetivos principales en la descripción</li>
+                            <li>• Agrega todas las tecnologías relevantes</li>
+                            <li>• Establece fechas realistas</li>
+                        </ul>
+                    </div>
+                </div>
+                <form onSubmit={handleSubmit} className="px-6 pt-4 pb-4 md:pb-0 space-y-6 w-full">
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Título del proyecto *
+                        </label>
+                        <input
+                            type="text"
+                            value={formData.title}
+                            onChange={(e) => setFormData({...formData, title: e.target.value})}
+                            placeholder="Ej: Dashboard Analytics, E-commerce Platform, etc."
+                            className={`w-full bg-white px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                                errors.title
+                                    ? "border-red-500 focus:ring-red-500"
+                                    : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            }`}
+                        />
+                        {errors.title && (
+                            <p className="mt-1 text-sm text-red-600">{errors.title}</p>
+                        )}
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Descripción *
+                        </label>
+                        <textarea
+                            value={formData.description}
+                            onChange={(e) => setFormData({...formData, description: e.target.value})}
+                            rows={4}
+                            placeholder="Describe los objetivos, características y alcance del proyecto..."
+                            className={`w-full bg-white px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                                errors.description
+                                    ? "border-red-500 focus:ring-red-500"
+                                    : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            }`}
+                        />
+                        {errors.description && (
+                            <p className="mt-1 text-sm text-red-600">{errors.description}</p>
+                        )}
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                Estado del proyecto
+                            </label>
+                            <select
+                                value={formData.status}
+                                onChange={(e) => setFormData({
+                                    ...formData,
+                                    status: e.target.value as ProjectStatus
+                                })}
+                                className="w-full bg-white px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                            >
+                                <option value="Activo"> Activo</option>
+                                <option value="En Progreso"> En Progreso</option>
+                                <option value="Completado">Completado</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                Fecha de inicio *
+                            </label>
+                            <input
+                                type="date"
+                                value={formData.date}
+                                onChange={(e) => setFormData({...formData, date: e.target.value})}
+                                className={`w-full bg-white px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all ${
+                                    errors.date
+                                        ? "border-red-500 focus:ring-red-500"
+                                        : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                }`}
+                            />
+                            {errors.date && (
+                                <p className="mt-1 text-sm text-red-600">{errors.date}</p>
+                            )}
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                Fecha límite (opcional)
+                            </label>
+                            <input
+                                type="date"
+                                value={formData.deadline}
+                                onChange={(e) => setFormData({...formData, deadline: e.target.value})}
+                                className="w-full bg-white px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Tecnologías utilizadas
+                        </label>
+                        <div className="flex gap-2 mb-3">
+                            <input
+                                type="text"
+                                value={techInput}
+                                onChange={(e) => setTechInput(e.target.value)}
+                                onKeyPress={handleTechKeyPress}
+                                placeholder="Ej: React, Next.js, Tailwind, Node.js..."
+                                className="flex-1 bg-white px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                            />
+                            <button
+                                type="button"
+                                onClick={addTechnology}
+                                className="px-6 py-3 bg-slate-600 text-slate-50 rounded-xl hover:bg-slate-700 hover:cursor-pointer transition-all font-medium shadow-md hover:shadow-lg"
+                            >
+                                <span className="hidden md:block">Agregar</span>
+                                <span className="md:hidden block">+</span>
+                            </button>
+                        </div>
+
+                        {formData.technologies && formData.technologies.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mt-3">
+                                {formData.technologies.map((tech) => (
+                                    <span
+                                        key={tech}
+                                        className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-50 text-slate-700 rounded-lg text-sm font-medium border border-slate-300"
+                                    >
+                                        <span>
+                                            <svg className="w-5 h-5 text-slate-950" fill="currentColor"
+                                                 stroke="currentColor"
+                                                 viewBox="0 0 50 50">
+                                              <path
+                                                  d="M8 8C5.757 8 4 9.757 4 12L4 34C4 34.738 4.2050625 35.413 4.5390625 36L2 36C1.447 36 1 36.447 1 37C1 39.757 3.243 42 6 42L44 42C46.757 42 49 39.757 49 37C49 36.447 48.553 36 48 36L45.460938 36C45.794938 35.413 46 34.738 46 34L46 12C46 9.757 44.243 8 42 8L8 8 z M 8 10L42 10C43.141 10 44 10.859 44 12L44 34C44 35.141 43.141 36 42 36L8 36C6.859 36 6 35.141 6 34L6 12C6 10.859 6.859 10 8 10 z M 26.498047 14.986328 A 1.0001 1.0001 0 0 0 25.521484 15.791016L22.521484 29.791016 A 1.0005838 1.0005838 0 1 0 24.478516 30.208984L27.478516 16.208984 A 1.0001 1.0001 0 0 0 26.498047 14.986328 z M 18.037109 17.988281 A 1.0001 1.0001 0 0 0 17.199219 18.400391L13.75 23L17.199219 27.599609 A 1.0003905 1.0003905 0 1 0 18.800781 26.400391L16.25 23L18.800781 19.599609 A 1.0001 1.0001 0 0 0 18.037109 17.988281 z M 31.933594 17.990234 A 1.0001 1.0001 0 0 0 31.199219 19.599609L33.75 23L31.199219 26.400391 A 1.0003905 1.0003905 0 1 0 32.800781 27.599609L36.25 23L32.800781 18.400391 A 1.0001 1.0001 0 0 0 31.933594 17.990234 z"
+                                                  fill="#FFFFFF"/>
+                                            </svg>
+                                        </span>
+                                        {tech}
+                                        <button
+                                            type="button"
+                                            onClick={() => removeTechnology(tech)}
+                                            className="ml-1 text-slate-600 hover:text-slate-700 transition-colors hover:cursor-pointer"
+                                        >
+                                      ×
+                                    </button>
+                                  </span>
+                                ))}
+                            </div>
+                        )}
+                        <p className="mt-2 text-xs text-gray-500">
+                            Presiona Enter para agregar rápidamente
+                        </p>
+                    </div>
+
+                    <div className="flex justify-end gap-4 pt-6 border-t border-gray-200">
+                        <button
+                            type="submit"
+                            disabled={isFormLoading}
+                            className="px-6 py-3 bg-slate-600 text-slate-50 rounded-xl font-medium hover:bg-slate-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none"
+                        >
+                            {isFormLoading ? (
+                                <span className="flex items-center gap-2">
+                                    <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                                strokeWidth="4"/>
+                                        <path className="opacity-75" fill="currentColor"
+                                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                                    </svg>
+                                    {isEditing ? "Actualizando..." : "Creando..."}
+                                </span>
+                            ) : (
+                                isEditing ? "Actualizar Proyecto" : "Crear Proyecto"
+                            )}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => router.push("/")}
+                            disabled={isFormLoading}
+                            className="px-6 py-3 bg-gray-100 border border-slate-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all disabled:opacity-50"
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+}

@@ -1,0 +1,36 @@
+'use client';
+import Link from 'next/link';
+
+export default function Navbar() {
+    return (
+        <nav
+            className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 sticky top-0 z-50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center h-16">
+                    <Link href="/" className="flex items-center space-x-2">
+                        <div
+                            className="w-10 h-10  md:w-12 md:h-12 bg-slate-500 rounded-xl flex justify-center items-center text-white">
+                            <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor"
+                                 viewBox="0 0 50 50">
+                                <path
+                                    d="M7 8C4.757 8 3 9.757 3 12L3 34C3 34.738 3.2050625 35.413 3.5390625 36L1 36C0.448 36 0 36.447 0 37C0 39.757 2.243 42 5 42L45 42C47.757 42 50 39.757 50 37C50 36.447 49.552 36 49 36L46.460938 36C46.794938 35.413 47 34.738 47 34L47 12C47 9.757 45.243 8 43 8L7 8 z M 7 10L43 10C44.14 10 45 10.859 45 12L45 34C45 35.141 44.14 36 43 36L7 36C5.86 36 5 35.141 5 34L5 12C5 10.859 5.86 10 7 10 z M 35 15 A 2 2 0 0 0 33.083984 17.564453L25.521484 25.072266 A 2 2 0 0 0 25 25 A 2 2 0 0 0 24.484375 25.070312L20.931641 21.517578 A 2 2 0 0 0 19 19 A 2 2 0 0 0 17.070312 21.515625L9.2929688 29.292969 A 1.0001 1.0001 0 1 0 10.707031 30.707031L18.484375 22.929688 A 2 2 0 0 0 19 23 A 2 2 0 0 0 19.515625 22.929688L23.068359 26.482422 A 2 2 0 0 0 25 29 A 2 2 0 0 0 26.931641 26.490234L34.533203 18.943359 A 2 2 0 0 0 35 19 A 2 2 0 0 0 35.470703 18.941406L39.298828 22.712891 A 1.0001 1.0001 0 1 0 40.701172 21.287109L36.919922 17.560547 A 2 2 0 0 0 35 15 z"
+                                />
+                            </svg>
+                        </div>
+                        <span
+                            className="font-bold text-slate-50 text-md md:text-xl">
+              Gestion de Proyectos
+            </span>
+                    </Link>
+
+                    <div className="flex items-center space-x-3">
+                        <div
+                            className="w-10 h-10  md:w-12 md:h-12 rounded-full bg-slate-600 flex items-center justify-center text-white text-sm font-medium">
+                            JF
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    );
+}

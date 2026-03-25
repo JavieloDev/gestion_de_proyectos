@@ -1,0 +1,17 @@
+'use client';
+
+import ErrorBoundary from '@/components/error';
+
+export default function DashboardError({
+                                           reset,
+                                       }: {
+    reset: () => void;
+}) {
+    return (
+        <ErrorBoundary
+            reset={reset}
+            title="Error al cargar el dashboard"
+            message="No pudimos cargar tus proyectos. Por favor, intenta nuevamente."
+        />
+    );
+}
