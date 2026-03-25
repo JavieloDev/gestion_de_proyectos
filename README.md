@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gestión de Proyectos - Dashboard
 
-## Getting Started
+Aplicación web para la gestión y seguimiento de proyectos, desarrollada con Next.js y TypeScript. Permite crear, editar,
+eliminar y visualizar proyectos con estadísticas en tiempo real.
 
-First, run the development server:
+## Requisitos Previos
+
+- Node.js 18.x o superior
+- npm o yarn
+- Git
+
+## Instalación
 
 ```bash
+# Clonar repositorio
+git clone https://github.com/JavieloDev/gestion_de_proyectos.git
+cd gestion_de_proyectos
+
+# Instalar dependencias
+npm install
+# o
+yarn install
+
+# Ejecutar en desarrollo
 npm run dev
-# or
+# o
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+``` 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Distribución de rutas
+```markdown
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+├── app/                   
+│   ├── (dashboard)/        # Sección principal con navbar
+│   │   ├── projects/       # Gestión de proyectos
+│   │   │   ├── [id]/       # Detalle de proyecto
+│   │   │   │   └── edit/   # Editar proyecto
+│   │   │   └── new/        # Crear proyecto
+│   │   └── error.tsx       # Componete para manejar errores del Dashboard
+│   │   └── loading.tsx     # Componete para manejar la carga de datos del Dashboard
+│   │   └── layout.tsx      # Layout del Dashboard principal
+│   │   └── page.tsx        # Dashboard principal
+│   └── layout.tsx          # Layout raíz
+├── components/             # Componentes reutilizables
+│   ├── error.tsx           # Componente error generico
+│   ├── loading.tsx         # Componente loading generico
+│   ├── navbar.tsx          # Barra de navegacion superior
+│   ├── project-card.tsx    # Card de proyectos
+│   ├── project-form.tsx    # Formulario CRUD
+│   ├── remove-modal.tsx    # Eliminar proyecto
+│   └── search-filter.tsx   # Filtro de proyectos
+├── hooks/                  # Custom hooks
+│   └── use-project.ts      # Lógica de proyectos con localStorage
+├── lib/                    # Utilidades y tipos
+│   ├── types.ts            # Interfaces TypeScript
+│   └── data.mock.ts        # Datos de ejemplo
+└── public/                 # Archivos estáticos
+``` 
+## Scripts disponibles
+```bash
+npm run dev	    #Modo desarrollo con hot reload
+npm run build	    #Construcción para producción
+npm start	    #Ejecutar en producción
+npm run lint	    #Ejecutar linter
+``` 
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
